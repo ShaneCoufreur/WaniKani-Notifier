@@ -86,11 +86,13 @@ function check() {
 				urlToVisit = "https://www.wanikani.com/review/session";
 				chrome.browserAction.setIcon({ path: "icons/red.png" });
 				chrome.browserAction.setTitle({ title: "Begin WaniKani review" });
+				setBadgeNumber(dict[1].total_count);
 			} else if (dict[0].total_count > 0) {
 				// Lesson is available
 				urlToVisit = "https://www.wanikani.com/lesson/session";
 				chrome.browserAction.setIcon({ path: "icons/orange.png" });
 				chrome.browserAction.setTitle({ title: "Begin WaniKani lesson" });
+				setBadgeNumber(dict[0].total_count);
 			} else {
 				// Waiting
 				urlToVisit = "https://www.wanikani.com/dashboard";
@@ -103,5 +105,15 @@ function check() {
 				scheduledAlert = setTimeout(check, nextReviewDate); //use nextReviewDate
 			}
 		});
+	}
+
+	function setBadgeNumber(amount){
+		let text = '';
+		if(amount > 999){
+			text = '999+';
+		} else{
+			text = amount.toString();
+		}
+		chrome.browserAction.setBadgeText({text: text});
 	}
 }
